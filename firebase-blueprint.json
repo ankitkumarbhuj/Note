@@ -1,0 +1,107 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile and vault PIN preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique Google user ID"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "vaultPin": {
+          "type": "string",
+          "description": "Optional 4-digit PIN for Private Notes vault"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of profile creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last update"
+        }
+      },
+      "required": ["userId"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Business or Private note document",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Document ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner Google User ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Note title"
+        },
+        "content": {
+          "type": "string",
+          "description": "Note body content or markdown"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["BUSINESS", "PRIVATE", "GENERAL"],
+          "description": "Category classification"
+        },
+        "isPinned": {
+          "type": "boolean",
+          "description": "Whether note is pinned to top"
+        },
+        "isFavorite": {
+          "type": "boolean",
+          "description": "Whether note is marked as favorite"
+        },
+        "colorHex": {
+          "type": "string",
+          "description": "Hex accent color for note card"
+        },
+        "tags": {
+          "type": "array",
+          "description": "List of tags (max 10)"
+        },
+        "checklist": {
+          "type": "array",
+          "description": "List of checklist items (max 50)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp via FieldValue.serverTimestamp()"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": ["userId", "title", "content", "category", "isPinned", "isFavorite", "colorHex", "tags"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with optional private vault PIN settings"
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": "Note",
+      "description": "User notes categorized by Business, Private, or General"
+    }
+  }
+}
